@@ -1,0 +1,111 @@
+install.packages(c("tidyverse", "caret", "randomForest", "e1071", "corrplot", "pROC"))
+library(tidyverse)
+library(caret)
+library(randomForest)
+library(corrplot)
+library(pROC)
+library(janitor)
+install.packages("janitor")
+
+data <- read.csv("c:/Users/Abdul_Rasheed/Downloads/StudentsPerformance.csv")
+head(data)
+data <- data |> clean_names()
+str(data)
+summary(data)
+#Check for duplicates
+sum(duplicated(data))
+#check for missing values 
+colSums(is.na(data))
+
+#convert categorical variables to factors:
+data$gender <- as.factor(data$gender)
+data$race_ethnicity <- as.factor(data$race_ethnicity)
+data$parental_level_of_education <- as.factor(data$parental_level_of_education)
+data$lunch <- as.factor(data$lunch)
+data$test_preparation_course <- as.factor(data$test_preparation_course)
+
+# Feature Engineering
+data$average_score <- rowMeans(data[,c("math_score","reading_score","writing_score")])
+
+# Create at-risk variable
+data$at_risk_math <- ifelse(data$math_score < 50, 1, 0)
+data$at_risk_math <- as.factor(data$at_risk_math)
+
+# Exploratory Data Analysis (EDA)
+ggplot(data, aes(x=math_score)) +
+  geom_histogram(fill = "steelblue", bins = 30) +
+    theme_minimal()
+#Correlation Matrix
+numeric_data <- data %>%
+  select(math_score, reading_score, writing_score)
+cor_matrix <- cor(numeric_data)
+corrplot(cor_matrix, method = "color", addCoef.col = "black")
+
+# Statistical Analysis
+# Gender Difference (T-test)
+t.test(math_score ~ gender, data = data)
+
+#Parental Education (ANOVA)
+anova_model <- aov(math_score ~ parental_level_of_education, data = data)
+summary(anova_model)
+# if significant:
+TukeyHSD(anova_model)
+
+# Test Preparation impact
+t.test(math_score ~ test_preparation_course, data = data)
+
+# Regression Modeling
+#we use caret for professional workflow 
+set.seed(123)
+trainIndex <- createDataPartition(data$math_score, p=.8, list = FALSE)
+train_data <- data[trainIndex, ]
+test_data <- data[-trainIndex, ]
+
+lm_model <- train(math_score ~ gender + race_ethnicity +
+                    parental_level_of_education + lunch + test_preparation_course,
+                  data = train_data, method = "lm")
+lm_model
+
+#Predict
+lm_pred <- predict(lm_model, test_data)
+postResample(lm_pred, test_data$math_score)
+
+# Random Forest Regression
+rf_model <- train(
+  math_score ~ gender + race_ethnicity + parental_level_of_education + lunch
+  + test_preparation_course, data = train_data, menthod = "rf",
+  trControl = trainControl(method = "cv", number = 5))
+rf_model
+  
+  #predict
+rf_pred <- predict(rf_model, test_data)
+postResample(rf_pred, test_data$math_score)
+
+#Classification Modeling
+#Logistic Regression
+log_model <- train(at_risk_math ~ gender + race_ethnicity + 
+                     parental_level_of_education + lunch + test_preparation_course,
+                   data = train_data,
+                   method = "glm",
+                   family = "binomial")
+log_pred <- predict(log_model, test_data)
+confusionMatrix(log_pred, test_data$at_risk_math)
+
+# Random Forest Classifier
+rf_clf <- train(at_risk_math ~ gender + 
+                  race_ethnicity + lunch + parental_level_of_education
+                + test_preparation_course, data = train_data, method = "rf",
+                trControl = trainControl(method = "cv", number = 5))
+rf_clf_pred <- predict(rf_clf, test_data)
+confusionMatrix(rf_clf_pred, test_data$at_risk_math)
+
+# ROC CURVE
+prob <- predict(rf_clf, test_data, type = "prob")
+roc_curve <- roc(test_data$at_risk_math, prob[,2])
+plot(roc_curve)
+auc(roc_curve)
+
+#Feature Importance
+varImp(rf_model)
+varImp(rf_clf)
+
