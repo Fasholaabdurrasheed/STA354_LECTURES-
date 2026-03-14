@@ -1,5 +1,5 @@
 
-
+# MATRIC NUMBER: 24/56EG152
 # Sample data (30 observations)
 
 set.seed(123)
@@ -7,6 +7,12 @@ set.seed(123)
 score <- rnorm(30, mean = 70, sd = 8)
 
 score
+
+# Descriptive Statistics
+summary(score)
+mean(score)
+sd(score)
+
 
 # 1. Check Normality using Histogram
 
@@ -20,12 +26,26 @@ hist(score,
 
 shapiro.test(score)
 
+# Q-Q Plot for Normality
+qqnorm(score)
+qqline(score, col = "red")
+
 
 # 3. Check for Outlier
 
 boxplot(score,
         main = "Boxplot for Outlier Detection",
         col = "lightgreen")
+
+Q1 <- quantile(score, 0.25)
+Q3 <- quantile(score, 0.75)
+
+IQR_value <- IQR(score)
+
+lower_bond <- Q1 - 1.5*IQR_value
+upper_bond <- Q3 + 1.5*IQR_value
+
+score[score < lower_bond | score > upper_bond]
 
 # 4. Check Serial Correlation
 # (Only relevant if data is time series)
