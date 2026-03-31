@@ -1,0 +1,11 @@
+MONTE CARLO SIMULATION RESULTS
+==============================
+
+Summary of Monte Carlo Estimates:
+
+  parameter True_Beta mean_EST    Bias Variance    MSE
+1 Intercept       2.0   1.2579 -0.7421   1.1731 1.7238
+2        b1       0.5   0.5017  0.0017   0.0042 0.0042
+3        b2       1.2   1.1996 -0.0004   0.0010 0.0010
+4        b3      -0.8  -0.8013 -0.0013   0.0042 0.0042
+5        b4       0.4   0.3934 -0.0066   0.0168 0.0168

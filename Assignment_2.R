@@ -5,7 +5,7 @@ getwd()
 set.seed(123)
 
 score <- rnorm(30, mean = 70, sd = 8)
-
+dim_len(score)
 cat("Generated Sample Daa:\n")
 print(score)
 

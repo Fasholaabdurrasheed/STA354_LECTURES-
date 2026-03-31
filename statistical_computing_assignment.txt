@@ -1,0 +1,152 @@
+STA354(STATISTICAL COMPUTING ASSIGNMENT)
+------------------------------------------
+
+DATA USED IN ANALYSIS
+
+
+Sample size of X:
+[1] 27
+
+Sample size of Y:
+[1] 27
+
+
+Question 1
+The three question an analyst would ask when working with one-sample data
+
+1. What is the central tendency of the dataset?
+This involves calculating the mean or median of the data.
+
+2. Does the sample mean differ from a hypothesized population mean?
+This is usually tested using a one-sample t-test.
+
+3. Does the data follow a normal distribution?
+This determines whether parametric or nonparametric tests should be used.
+
+
+QUESTION 2
+Three important distribution characteristics that must be confirmed:
+
+1. Normality of the data distribution.
+2. Presence of outliers.
+3. Independence of observations.
+
+
+DESCRIPTIVE STATISTICS
+
+Summary of X:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.290   0.655   1.280   2.661   2.705  15.200 
+
+Summary of Y:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  47.80   49.35   50.30   50.37   51.30   53.20 
+
+Mean of X:
+[1] 2.661481
+
+Mean of Y:
+[1] 50.36667
+
+Meadian of X:
+[1] 1.28
+
+Meadian of Y:
+[1] 50.3
+
+Standard deviation of X:
+[1] 3.779269
+
+Standard deviation of Y:
+[1] 1.479085
+
+
+DATA VISUALIZATION OF X & Y
+
+QUESTION 3
+Performing normality test using Shapiro-Wilk test.
+
+Shapiro test for X:
+
+	Shapiro-Wilk normality test
+
+data:  X
+W = 0.61359, p-value = 2.991e-07
+
+
+Shapiro test for Y:
+
+	Shapiro-Wilk normality test
+
+data:  Y
+W = 0.98173, p-value = 0.8991
+
+
+Interpretation:
+If p-value < 0.05, data is not normally distributed.
+If p-value > 0.05, data may be normally distributed.
+
+
+One-sample t-test for Y (mu = 50)
+
+	One Sample t-test
+
+data:  Y
+t = 1.2881, df = 26, p-value = 0.209
+alternative hypothesis: true mean is not equal to 50
+95 percent confidence interval:
+ 49.78156 50.95177
+sample estimates:
+mean of x 
+ 50.36667 
+
+
+Interpretation:
+If p-value <= 0.05, reject the null hypothesis.
+If p-value > 0.05, fail to reject the null hypothesis.
+
+
+Wilcoxon Signed Rank Test for X (mu = 1)
+
+	Wilcoxon signed rank exact test
+
+data:  X
+V = 269, p-value = 0.0552
+alternative hypothesis: true location is not equal to 1
+
+
+Interpretation:
+This test is used when normality assumption is violated.
+
+
+Additional Visualization of X
+
+
+Additional Visualization of Y
+
+
+QUESTION 5
+
+Difference between parametric and nonparametric tests:
+
+Parametric Tests:
+Assume normal distribution and involve parameters such as mean and variance.
+
+Example in R:
+t.test(Y, mu=50)
+
+Nonparametric Tests:
+Do not assume normal distribution and are based on ranks.
+
+Example in R:
+wilcox.test(X, mu=1)
+
+
+QUESTION 6
+
+Effects of small sample size and large measurement error:
+
+1. Reduced statistical power.
+2. Increased standard errors.
+3. Wider confidence intervals.
+4. Less reliable statistical inference.
