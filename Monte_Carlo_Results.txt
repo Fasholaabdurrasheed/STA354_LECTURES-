@@ -1,0 +1,32 @@
+MONTE CARLO SIMULATION FOR POSITIVELY SKEWED ERROR REGRESSION
+============================================================
+
+Sample Size: 100 
+Number of Simulations: 10000 
+
+True Parameters:
+[1]  2.0  0.5  1.2 -0.8
+
+Running Monte Carlo Simulation...
+
+Simulation Completed
+
+BIAS OF ESTIMATORS
+==================
+[1] -0.0009582541  0.0002609915  0.0002052798 -0.0004940044
+
+MEAN SQUARE ERROR (MSE)
+========================
+[1] 0.01038126 0.01061595 0.01044990 0.01068329
+
+ROOT MEAN SQUARE ERROR (RMSE)
+==============================
+[1] 0.1018885 0.1030337 0.1022247 0.1033600
+
+FINAL RESULT TABLE
+==================
+  Parameter True_Value          Bias        MSE      RMSE
+1 Intercept        2.0 -0.0009582541 0.01038126 0.1018885
+2        X1        0.5  0.0002609915 0.01061595 0.1030337
+3        X2        1.2  0.0002052798 0.01044990 0.1022247
+4        X3       -0.8 -0.0004940044 0.01068329 0.1033600
